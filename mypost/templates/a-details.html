@@ -1,0 +1,109 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ object.title_tag }}{% endblock %}    
+
+{% block content %}
+
+<br>
+
+<div class="container">
+  <ul>
+    <h1>{{object.title}} : {{post.author.id}}</h1>  
+
+
+    <p style="font-style: italic; color: grey;">Author: {{object.author.first_name}} {{object.author.last_name}}</p>
+    <h6>{{object.published_date}}</h6>
+
+    {% if object.header_image %}
+        <img style="height: 200px; width: 400px;" src="{{object.header_image.url}}" alt="image">
+    {% endif %}
+    <br>
+
+    <p>{{object.body|safe}}</p>
+</ul><br><br><br>
+</div>
+
+<img src="{{object.profile.profile_pic}}" alt="">
+
+<div class="container">
+  <form action="{% url 'like_post' object.pk %}" method="POST">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+        {% if liked %}
+        <button type="submit" class="btn btn-primary", name="post_id", value="{{ object.id }}">
+          Unlike <span style="color:hsl(64, 94%, 51%); font-size: 15px;font-weight:bolder;"></span>  
+        </button>  {{total_likes}} Likes               <br><br>
+        {% else %}
+            
+          <button type="submit" class="btn btn-primary", name="post_id", value="{{ object.id }}">
+            Likes <span style="color:hsl(64, 94%, 51%); font-size: 15px;font-weight:bolder;" class="btn btn-danger">{{total_likes}}</span>
+          </button>
+
+            <br><br><br>
+        {% endif %}
+    {% else %}
+        <h1>Must be logged in to like a post</h1>
+        
+        {{total_likes}} Like(s)
+        
+        
+    {% endif %}
+</form>
+</div>
+
+<div class="container">
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{object.author.profile.profile_pic.url}}" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{object.author.first_name}} {{object.author.last_name}}</h5>
+          <p class="card-text">{{object.author.profile.bio}}</p>
+
+        <button style="background-color: white;" ><a style="text-decoration: none; font-weight: bolder; font-size: 12px;" href="{{object.author.profile.facebook_url}}">facebook</a></button>
+        <button style="background-color: white;"><a style="text-decoration: none; font-size: 12px; font-weight: bolder;" href="{{object.author.profile.twitter_url}}">twitter</a></button>
+
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="container">
+  <h2>Comments</h2>
+<br>
+
+{% if not object.comments.all %}
+  <h1><a href="{% url 'add_comment' object.pk %}">Add Comment</a></h1>
+  <h3>No comments yet, Kindly add one</h3>
+
+{% else %}
+<h1><a style="text-decoration: none;" href="{% url 'add_comment' object.pk %}">Add Comment</a></h1><br>
+  {% for comm in object.comments.all %}
+    <strong>
+      {{comm.name}} | {{comm.date_made}}
+    </strong>
+    
+    <p>{{comm.body}}</p>
+
+  {% endfor %}
+
+{% endif %}
+
+
+
+
+<br><br><br>
+</div>
+
+
+
+
+{% endblock %}

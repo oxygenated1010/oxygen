@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+
+{% block content %}  
+
+<h1 style="text-align: center; color: olivedrab; font-size: 60px;">Obinna's Blog</h1>
+
+{% if user.is_authenticated %}
+<h1 style="text-align: center; color: blueviolet;">Welcome, {{user.username}}</h1>
+
+{% else %}
+<h1 style="text-align: center; color: blueviolet;">Welcome, Guest</h1>
+{% endif %}
+
+
+
+
+
+    {% for post in object_list reversed %} 
+<div style="border: 1px solid grey;" class="container">
+    <div style="margin-left: 20px;" class="cont">
+        <h1><a style="text-decoration: none;" href="{% url 'article-details' post.pk %}">{{post.title}}</a></h1>
+        <h5 style="font-style: italic;">By: {{post.author.first_name}} {{post.author.last_name}}</h5>
+        <h6>{{post.published_date}}</h6>
+        <p style="font-size: 20px;">{{post.body|truncatewords:20}} <span><br>
+
+            {% if user.is_authenticated %}
+                {% if user.id == post.author.id %}
+            
+                    <a href="{% url 'edit_post' post.pk %}">Update</a><br>
+                    <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
+
+                {% endif %}
+
+            {% endif %}
+            
+        </span>
+        </p>
+
+    </div>
+</div><br><br>
+
+        {% endfor %}
+
+{% endblock %}
+
+
+
+
+
+
+
+

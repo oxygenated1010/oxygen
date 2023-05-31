@@ -1,0 +1,45 @@
+
+
+
+{% extends 'base.html' %}
+
+{% block content %}  
+
+{% if user.is_authenticated %}
+
+<h1 style="text-align: center; color: olivedrab; font-size: 60px;">Add Blog Post</h1>
+
+<div class="form-group">
+    <div class="container">
+        <form action="" method="POST" enctype="multipart/form-data">  <!-- enctype="multipart/form-data" ALLOWS Diff kinds of data -->
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+        
+            <button class="btn btn-primary">Post</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    var name = "{{user.id}}";
+    document.getElementById("jay").value = name
+</script>
+
+{% else %}
+<h1 style="color: red; text-align: center; font-size: 40px;">You are not allowed to do this, you must register first</h1>
+{% endif %}
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

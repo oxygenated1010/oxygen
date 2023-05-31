@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+
+{% block content %}  
+
+{% if user.is_authenticated %}
+    {% if user.id == object.author.id %}
+
+        <h1 style="text-align: center; color: olivedrab; font-size: 60px;">Update Blog Post</h1>
+
+        <div class="container">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+        
+                <button class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    {% else %}
+        {{object.title}} By {{object.author.first_name}} {{object.author.last_name}}
+        <h1 style="color: red;">This post was not created by you, you are not allowed to alter it></h1>
+    {% endif %}  
+{% else %}
+
+<h1 style="color: red; font-size: 50px; text-align: center;">You are not allowed here</h1>
+
+{% endif %}
+
+
+
+
+{% endblock %}

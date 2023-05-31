@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+
+{% block content %}  
+
+{% if user.is_authenticated %}
+    {% if user.id == object.author.id %}
+
+        <h1 style="text-align: center; color: olivedrab; font-size: 60px;">Delete Blog Post</h1><br>
+
+        <h1 style="color: red;">Delete: <span style="color: blue;">{{object.title}}</span> by <span style="color: black;">{{object.author}}</span></h1>
+
+        <div class="container">
+            <form action="" method="POST">
+                {% csrf_token %}
+            
+            <strong>Are you sure?</strong>
+                <button class="btn btn-danger">Delete</button>
+                
+            </form>
+        </div>
+    {% else %}
+        <h1 style="color: red;">Access Denied</h1>
+    {% endif %}
+
+{% else %}
+    <h1 style="color: red; font-size: 50px; text-align: center;">You are not allowed to do this and you know it</h1>
+
+{% endif %}
+
+
+
+
+
+{% endblock %}
